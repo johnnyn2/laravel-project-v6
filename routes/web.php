@@ -14,5 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home'); 
 });
+
+Route::view('/about', 'about'); // directly return view if it is a static page
+
+Route::view('/services', 'services', ['services' => [
+    'Service 1', 'Service 2', 'Service 3', 'Service 4'
+]]); // directly return view if it is a static page
+
+Route::get('/hello', 'HelloController@index'); // GET request. Return dynamic view from HelloController
