@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Service;
 
 class HelloController extends Controller
 {
@@ -13,12 +14,9 @@ class HelloController extends Controller
      */
     public function index()
     {
-        $var1 = "Hello";
-        $var2 = " World!";
-        return view('hello', [
-            "var1" => $var1,
-            "var2" => $var2
-        ]);
+        $services = Service::all();
+
+        return view('hello', [ 'services' => $services, 'var1' => 'var1']);
     }
 
     /**
