@@ -70134,7 +70134,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var initState = {
   projects: []
 };
-var ProjectList = function ProjectList() {
+var ProjectList = function ProjectList(props) {
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(initState),
       _useState2 = _slicedToArray(_useState, 2),
       state = _useState2[0],
@@ -70155,6 +70155,7 @@ var ProjectList = function ProjectList() {
       });
     });
   }, []);
+  console.log('project list: ', props);
   var projects = state.projects;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "container py-4"

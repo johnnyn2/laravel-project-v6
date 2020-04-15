@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const initState = {
     projects: [],
 };
-export const ProjectList = () => {
+export const ProjectList = (props) => {
     const [state, setState] = useState(initState);
     useEffect(() => {
         setState(initState => ({
@@ -24,6 +24,7 @@ export const ProjectList = () => {
         }));
     }, []);
 
+    console.log('project list: ', props);
     const {projects} = state;
     return (
         <div className='container py-4'>
