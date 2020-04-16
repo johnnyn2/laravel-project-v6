@@ -12,21 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('app'); 
-});
-
-Route::view('/about', 'about'); // directly return view if it is a static page
-
-Route::view('/services', 'services', ['services' => [
-    'Service 1', 'Service 2', 'Service 3', 'Service 4'
-]]); // directly return view if it is a static page
-
-Route::get('/hello', 'HelloController@index'); // GET request. Return dynamic view from HelloController
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::view('/{path}', 'app');
+Route::view('/{path?}', 'app');

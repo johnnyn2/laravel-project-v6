@@ -70110,12 +70110,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -70141,19 +70135,24 @@ var ProjectList = function ProjectList(props) {
       setState = _useState2[1];
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
-    setState(function (initState) {
-      return _objectSpread({}, initState, {
-        projects: [{
-          id: 0,
-          name: 'Project 1',
-          tasks_count: 3
-        }, {
-          id: 1,
-          name: 'Project 2',
-          tasks_count: 4
-        }]
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/projects').then(function (res) {
+      setState({
+        projects: res.data
       });
-    });
+    }); // setState(initState => ({
+    //     ...initState,
+    //     projects: [
+    //         {
+    //             id: 0,
+    //             name: 'Project 1',
+    //             tasks_count: 3,
+    //         }, {
+    //             id: 1,
+    //             name: 'Project 2',
+    //             tasks_count: 4,
+    //         }
+    //     ],
+    // }));
   }, []);
   console.log('project list: ', props);
   var projects = state.projects;

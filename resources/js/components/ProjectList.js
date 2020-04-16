@@ -8,20 +8,25 @@ const initState = {
 export const ProjectList = (props) => {
     const [state, setState] = useState(initState);
     useEffect(() => {
-        setState(initState => ({
-            ...initState,
-            projects: [
-                {
-                    id: 0,
-                    name: 'Project 1',
-                    tasks_count: 3,
-                }, {
-                    id: 1,
-                    name: 'Project 2',
-                    tasks_count: 4,
-                }
-            ],
-        }));
+        axios.get('api/projects').then(res => {
+            setState({
+                projects: res.data,
+            });
+        });
+        // setState(initState => ({
+        //     ...initState,
+        //     projects: [
+        //         {
+        //             id: 0,
+        //             name: 'Project 1',
+        //             tasks_count: 3,
+        //         }, {
+        //             id: 1,
+        //             name: 'Project 2',
+        //             tasks_count: 4,
+        //         }
+        //     ],
+        // }));
     }, []);
 
     console.log('project list: ', props);
