@@ -7,8 +7,10 @@ const initState = {
         description: '',
         tasks: [],
     },
+    title: '',
+    errors: [],
 };
-export const SingleProject = ({ match }) => {
+export const SingleProject = ({ match, history }) => {
     const [state, setState] = useState(initState);
     useEffect(() => {
         const projectId = match.params.id;
@@ -18,20 +20,12 @@ export const SingleProject = ({ match }) => {
                 project: response.data,
             })
         }).catch(e => console.log(e));
-
-        setState({
-            project: {
-                name: 'Project 1',
-                description: 'This is project 1',
-                tasks: [
-                    { id: 0, title: 'Draw app icon' },
-                    { id: 1, title: 'Set up react boilerplate' },
-                    { id: 2, title: 'Set up database' },
-                ],
-            },
-        });
     }, []);
 
+    function handleMarkProjectAsCompleted() {
+        axios.put(`/api/projects/${state.project.id}`)
+            .then(res => history.push('/'))
+    }
 
     const { project } = state;
     return (
@@ -43,9 +37,12 @@ export const SingleProject = ({ match }) => {
                         <div className='card-body'>
                             <p>{project.description}</p>
 
-                            <button className='btn btn-primary btn-sm'>
+                            <button
+                                className='btn btn-primary btn-sm'
+                                onClick={handleMarkProjectAsCompleted}
+                            >
                                 Mark as completed
-                                </button>
+                            </button>
 
                             <hr />
 

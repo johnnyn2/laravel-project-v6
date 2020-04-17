@@ -70139,20 +70139,7 @@ var ProjectList = function ProjectList(props) {
       setState({
         projects: res.data
       });
-    }); // setState(initState => ({
-    //     ...initState,
-    //     projects: [
-    //         {
-    //             id: 0,
-    //             name: 'Project 1',
-    //             tasks_count: 3,
-    //         }, {
-    //             id: 1,
-    //             name: 'Project 2',
-    //             tasks_count: 4,
-    //         }
-    //     ],
-    // }));
+    });
   }, []);
   console.log('project list: ', props);
   var projects = state.projects;
@@ -70219,10 +70206,13 @@ var initState = {
     name: '',
     description: '',
     tasks: []
-  }
+  },
+  title: '',
+  errors: []
 };
 var SingleProject = function SingleProject(_ref) {
-  var match = _ref.match;
+  var match = _ref.match,
+      history = _ref.history;
 
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(initState),
       _useState2 = _slicedToArray(_useState, 2),
@@ -70238,23 +70228,14 @@ var SingleProject = function SingleProject(_ref) {
     })["catch"](function (e) {
       return console.log(e);
     });
-    setState({
-      project: {
-        name: 'Project 1',
-        description: 'This is project 1',
-        tasks: [{
-          id: 0,
-          title: 'Draw app icon'
-        }, {
-          id: 1,
-          title: 'Set up react boilerplate'
-        }, {
-          id: 2,
-          title: 'Set up database'
-        }]
-      }
-    });
   }, []);
+
+  function handleMarkProjectAsCompleted() {
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/projects/".concat(state.project.id)).then(function (res) {
+      return history.push('/');
+    });
+  }
+
   var project = state.project;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "container py-4"
@@ -70269,7 +70250,8 @@ var SingleProject = function SingleProject(_ref) {
   }, project.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card-body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, project.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    className: "btn btn-primary btn-sm"
+    className: "btn btn-primary btn-sm",
+    onClick: handleMarkProjectAsCompleted
   }, "Mark as completed"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
     className: "list-group mt-3"
   }, project.tasks.map(function (task) {

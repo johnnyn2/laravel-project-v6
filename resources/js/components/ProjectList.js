@@ -13,20 +13,6 @@ export const ProjectList = (props) => {
                 projects: res.data,
             });
         });
-        // setState(initState => ({
-        //     ...initState,
-        //     projects: [
-        //         {
-        //             id: 0,
-        //             name: 'Project 1',
-        //             tasks_count: 3,
-        //         }, {
-        //             id: 1,
-        //             name: 'Project 2',
-        //             tasks_count: 4,
-        //         }
-        //     ],
-        // }));
     }, []);
 
     console.log('project list: ', props);
