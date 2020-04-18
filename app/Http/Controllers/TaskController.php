@@ -91,7 +91,7 @@ class TaskController extends Controller
     }
 
     public function markAsCompleted(Task $task) {
-        $task->is_completed = true;
+        $task->is_completed = !$task->is_completed;
         $task->update();
         return response()->json('Task updated!');
     }

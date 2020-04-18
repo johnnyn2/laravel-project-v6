@@ -14,8 +14,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::where('is_completed', false)
-                            ->orderBy('created_at', 'desc')
+        $projects = Project::orderBy('created_at', 'desc')
                             ->withCount(['tasks' => function($query) {
                                 $query->where('is_completed', false);
                             }])
@@ -65,6 +64,8 @@ class ProjectController extends Controller
         $project = Project::with(['tasks' => function($query) {
             $query->where('is_completed', false);
         }])->find($id);
+
+        $project = Project::with('tasks')->find($id);
         return $project->toJson();
     }
 
@@ -103,7 +104,7 @@ class ProjectController extends Controller
     }
 
     public function markAsCompleted(Project $project) {
-        $project->is_completed = true;
+        $project->is_completed = !$project->is_completed;
         $project->update();
         return response()->json('Project updated!');
     }

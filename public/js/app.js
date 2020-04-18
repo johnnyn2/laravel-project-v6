@@ -70187,6 +70187,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -70203,12 +70209,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var initState = {
   project: {
+    id: '',
     name: '',
     description: '',
-    tasks: []
+    is_completed: false,
+    create_at: '',
+    updated_at: ''
   },
   title: '',
-  errors: []
+  errors: [],
+  tasks: []
 };
 var SingleProject = function SingleProject(_ref) {
   var match = _ref.match,
@@ -70222,9 +70232,10 @@ var SingleProject = function SingleProject(_ref) {
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     var projectId = match.params.id;
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/projects/".concat(projectId)).then(function (response) {
-      setState({
-        project: response.data
-      });
+      setState(_objectSpread({}, state, {
+        project: response.data,
+        tasks: response.data.tasks
+      }));
     })["catch"](function (e) {
       return console.log(e);
     });
@@ -70236,7 +70247,59 @@ var SingleProject = function SingleProject(_ref) {
     });
   }
 
-  var project = state.project;
+  function handleFieldChange(e) {
+    setState(_objectSpread({}, state, _defineProperty({}, e.target.name, e.target.value)));
+  }
+
+  function handleAddNewTask(event) {
+    event.preventDefault();
+    var task = {
+      title: state.title,
+      project_id: state.project.id
+    };
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/tasks', task).then(function (res) {
+      setState(_objectSpread({}, state, {
+        title: '',
+        tasks: state.tasks.concat(res.data)
+      }));
+    })["catch"](function (err) {
+      setState(_objectSpread({}, state, {
+        errors: err.response.data.errors
+      }));
+    });
+  }
+
+  function handleMarkTaskAsCompleted(e, taskId) {
+    e.preventDefault();
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/tasks/".concat(taskId)).then(function (res) {
+      setState(function (prevState) {
+        var newState = _objectSpread({}, prevState);
+
+        console.log('newState: ', newState);
+        newState.tasks.filter(function (task) {
+          return task.id === taskId;
+        })[0].is_completed = !newState.tasks.filter(function (task) {
+          return task.id === taskId;
+        })[0].is_completed;
+        return newState;
+      });
+    });
+  }
+
+  function hasErrorFor(field) {
+    return state.errors[field];
+  }
+
+  function renderErrorFor(field) {
+    if (hasErrorFor(field)) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+        className: "invalid-feedback"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", null, state.errors[field][0]));
+    }
+  }
+
+  var project = state.project,
+      tasks = state.tasks;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "container py-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -70249,17 +70312,43 @@ var SingleProject = function SingleProject(_ref) {
     className: "card-header"
   }, project.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card-body"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, project.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, project.description), state.project.is_completed ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    className: "btn btn-danger btn-sm",
+    onClick: handleMarkProjectAsCompleted
+  }, "Mark as uncomplete") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
     className: "btn btn-primary btn-sm",
     onClick: handleMarkProjectAsCompleted
-  }, "Mark as completed"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
+  }, "Mark as completed"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+    onSubmit: handleAddNewTask
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "text",
+    name: "title",
+    className: "form-control ".concat(hasErrorFor('title') ? 'is-invalid' : ''),
+    placeholder: "Task title",
+    value: state.title,
+    onChange: handleFieldChange
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-append"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    className: "btn btn-primary"
+  }, "Add")), renderErrorFor('title'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
     className: "list-group mt-3"
-  }, project.tasks.map(function (task) {
+  }, tasks.map(function (task) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
       className: "list-group-item d-flex justify-content-between align-items-center",
       key: task.id
-    }, task.title, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-      className: "btn btn-primary btn-sm"
+    }, task.title, task.is_completed ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      className: "btn btn-danger btn-sm",
+      onClick: function onClick(e) {
+        return handleMarkTaskAsCompleted(e, task.id);
+      }
+    }, "Mark as uncomplete") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      className: "btn btn-primary btn-sm",
+      onClick: function onClick(e) {
+        return handleMarkTaskAsCompleted(e, task.id);
+      }
     }, "Mark as completed"));
   })))))));
 };

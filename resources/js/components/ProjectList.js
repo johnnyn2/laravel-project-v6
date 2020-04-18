@@ -26,7 +26,7 @@ export const ProjectList = (props) => {
                         <div className='card-body'>
                             <Link className='btn btn-primary btn-sm mb-3' to='/create'>
                                 Create new project
-                                </Link>
+                            </Link>
                             <ul className='list-group list-group-flush'>
                                 {projects.map(project => (
                                     <Link
