@@ -69959,10 +69959,10 @@ function App() {
     path: "/",
     component: _ProjectList__WEBPACK_IMPORTED_MODULE_3__["ProjectList"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: "/create",
+    path: "/projects/create",
     component: _NewProject__WEBPACK_IMPORTED_MODULE_4__["NewProject"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    path: "/:id",
+    path: "/projects/:id",
     component: _SingleProject__WEBPACK_IMPORTED_MODULE_5__["SingleProject"]
   }))));
 }
@@ -70163,13 +70163,13 @@ var ProjectList = function ProjectList(props) {
     className: "card-body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
     className: "btn btn-primary btn-sm mb-3",
-    to: "/create"
+    to: "/projects/create"
   }, "Create new project"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
     className: "list-group list-group-flush"
   }, projects.map(function (project) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
       className: "list-group-item list-group-item-action d-flex justify-content-between align-items-center",
-      to: "/".concat(project.id),
+      to: "/projects/".concat(project.id),
       key: project.id
     }, project.name, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
       className: "badge badge-primary badge-pill"
@@ -70353,7 +70353,9 @@ var SingleProject = function SingleProject(_ref) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
       className: "list-group-item d-flex justify-content-between align-items-center",
       key: task.id
-    }, task.title, task.is_completed ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      className: "col-8"
+    }, task.title), task.is_completed ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
       className: "btn btn-danger btn-sm",
       onClick: function onClick(e) {
         return handleMarkTaskAsCompleted(e, task.id);
@@ -70364,7 +70366,10 @@ var SingleProject = function SingleProject(_ref) {
         return handleMarkTaskAsCompleted(e, task.id);
       }
     }, "Mark as completed"));
-  })))))));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+    href: "/",
+    className: "btn btn-sm btn-secondary"
+  }, "BACK"))))));
 };
 
 /***/ }),

@@ -11,8 +11,8 @@ export default function App() {
             <div className="container">
                 <Switch>
                     <Route exact path='/' component={ProjectList} />
-                    <Route path='/create' component={NewProject} />
-                    <Route path='/:id' component={SingleProject} />
+                    <Route path='/projects/create' component={NewProject} />
+                    <Route path='/projects/:id' component={SingleProject} />
                 </Switch>
             </div>
         </BrowserRouter>

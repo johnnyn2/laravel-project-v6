@@ -146,7 +146,9 @@ export const SingleProject = ({ match, history }) => {
                                         className='list-group-item d-flex justify-content-between align-items-center'
                                         key={task.id}
                                     >
+                                        <div className="col-8">
                                         {task.title}
+                                        </div>
                                         {
                                             task.is_completed ?
                                             (
@@ -170,6 +172,7 @@ export const SingleProject = ({ match, history }) => {
                                     </li>
                                 ))}
                             </ul>
+                            <a href="/" className="btn btn-sm btn-secondary">BACK</a>
                         </div>
                     </div>
                 </div>
