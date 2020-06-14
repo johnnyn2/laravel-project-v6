@@ -17,15 +17,25 @@ const initState = {
 export const SingleProject = ({ match, history }) => {
     const [state, setState] = useState(initState);
     useEffect(() => {
+        let isCancelled = false;
         const projectId = match.params.id;
 
         axios.get(`/api/projects/${projectId}`).then(response => {
-            setState({
-                ...state,
-                project: response.data,
-                tasks: response.data.tasks,
-            })
-        }).catch(e => console.log(e));
+            if (!isCancelled) {
+                setState({
+                    ...state,
+                    project: response.data,
+                    tasks: response.data.tasks,
+                })
+            }
+        }).catch(e => {
+            if(!isCancelled) {
+                console.log('error: ', e);
+            }
+        });
+        return () => {
+            isCancelled = true;
+        }
     }, []);
 
     function handleMarkProjectAsCompleted() {

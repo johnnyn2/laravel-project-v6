@@ -70135,11 +70135,17 @@ var ProjectList = function ProjectList(props) {
       setState = _useState2[1];
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    var isCancelled = false;
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/projects').then(function (res) {
-      setState({
-        projects: res.data
-      });
+      if (!isCancelled) {
+        setState({
+          projects: res.data
+        });
+      }
     });
+    return function () {
+      isCancelled = true;
+    };
   }, []);
   console.log('project list: ', props);
   var projects = state.projects;
@@ -70230,15 +70236,23 @@ var SingleProject = function SingleProject(_ref) {
       setState = _useState2[1];
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    var isCancelled = false;
     var projectId = match.params.id;
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/projects/".concat(projectId)).then(function (response) {
-      setState(_objectSpread({}, state, {
-        project: response.data,
-        tasks: response.data.tasks
-      }));
+      if (!isCancelled) {
+        setState(_objectSpread({}, state, {
+          project: response.data,
+          tasks: response.data.tasks
+        }));
+      }
     })["catch"](function (e) {
-      return console.log(e);
+      if (!isCancelled) {
+        console.log('error: ', e);
+      }
     });
+    return function () {
+      isCancelled = true;
+    };
   }, []);
 
   function handleMarkProjectAsCompleted() {

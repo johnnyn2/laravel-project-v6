@@ -8,11 +8,17 @@ const initState = {
 export const ProjectList = (props) => {
     const [state, setState] = useState(initState);
     useEffect(() => {
+        let isCancelled = false;
         axios.get('api/projects').then(res => {
-            setState({
-                projects: res.data,
-            });
+            if (!isCancelled) {
+                setState({
+                    projects: res.data,
+                });
+            }
         });
+        return () => {
+            isCancelled = true;
+        }
     }, []);
 
     console.log('project list: ', props);
